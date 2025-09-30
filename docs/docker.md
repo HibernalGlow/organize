@@ -1,33 +1,30 @@
-# Using the organize docker image
+# 使用 organize Docker 镜像
 
-The organize docker image comes preinstalled with `exiftool` and `pdftotext` as well as
-all the python dependencies set up and ready to go.
+organize Docker 镜像预装了 `exiftool` 和 `pdftotext`，以及所有设置好的 Python 依赖。
 
 !!! danger
 
-    As organize is mainly used for moving files around you have to be careful about your
-    volume mounts and paths. **If you move a file to a folder which is not persisted
-    it is gone as soon as the container is stopped!**
+    由于 organize 主要用于移动文件，您必须小心您的卷挂载和路径。**如果您将文件移动到未持久化的文件夹，一旦容器停止，它就消失了！**
 
-## Building the image
+## 构建镜像
 
-`cd` into the organize folder (containing the `Dockerfile`) and build the image:
+`cd` 进入包含 `Dockerfile` 的 organize 文件夹并构建镜像：
 
 ```sh
 docker build -t organize .
 ```
 
-The image is now tagged as `organize`. Now you can test the image by running
+镜像现在标记为 `organize`。现在您可以通过运行来测试镜像
 
 ```sh
 docker run organize
 ```
 
-This will show the organize usage help text.
+这将显示 organize 使用帮助文本。
 
-## Running
+## 运行
 
-Let's create a basic config file `docker-conf.yml`:
+让我们创建一个基本的配置文件 `docker-conf.yml`：
 
 ```yml
 rules:
@@ -36,16 +33,16 @@ rules:
       - echo: "Found file: {path}"
 ```
 
-We can now run mount the config file to the container path `/config/config.yml`. The current directory is mounted to `/data` so we have some files present.
-We can now start the container:
+我们现在可以将配置文件挂载到容器路径 `/config/config.yml`。当前目录挂载到 `/data`，所以我们有一些文件存在。
+我们现在可以启动容器：
 
 ```sh
 docker run -v ./docker-conf.yml:/config/config.yml -v .:/data organize run
 ```
 
-### Passing the config file from stdin
+### 从 stdin 传递配置文件
 
-Instead of mounting the config file into the container you can also pass it from stdin:
+您也可以从 stdin 传递配置文件，而不是将其挂载到容器中：
 
 ```sh
 docker run -i organize check --stdin < ./docker-conf.yml

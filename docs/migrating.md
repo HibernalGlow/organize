@@ -1,108 +1,99 @@
-# Migrating from older versions
+# 从旧版本迁移
 
-First of all, thank you for being a long time user of `organize`!
+首先，感谢您长期使用 `organize`！
 
-I tried to keep the amount of breaking changes small but could not avoid them
-completely. Feel free to pin organize whatever version you need, but then you're
-missing the party.
+我试图保持破坏性更改的数量最小，但无法完全避免它们。随意固定 organize 任何您需要的版本，但那样您就错过了派对。
 
-Please open a issue on Github if you need help migrating your config file!
+如果您需要帮助迁移配置文件，请在 Github 上打开一个 issue！
 
 <hr>
 
-## Migrating from v2 to v3
+## 从 v2 迁移到 v3
 
-### Locations
+### 位置
 
-In organize v3 remote filesystems are no longer supported. You have to remove all
-`filesystem` parameters from your config and cannot longer use pyfilesystem URLs
-your `location`.
+在 organize v3 中，远程文件系统不再受支持。您必须从配置中移除所有 `filesystem` 参数，并且不能再在 `location` 中使用 pyfilesystem URL。
 
-### Placeholders
+### 占位符
 
-- Use `{now()}` instead of `{now}`.
-- Use `{utcnow()}` instead of `{utcnow}`.
-- The placeholders `{fs}` and `{fs_path}` are no longer available.
+- 使用 `{now()}` 而不是 `{now}`。
+- 使用 `{utcnow()}` 而不是 `{utcnow}`。
+- 占位符 `{fs}` 和 `{fs_path}` 不再可用。
 
-### Command line interface
+### 命令行界面
 
-The command line interface changed quite a bit! Update any scripts using the CLI
-to the new options:
+命令行界面发生了很大变化！更新任何使用 CLI 的脚本到新选项：
 
-- `organize check --debug` becomes `organize debug`
-- `organize reveal` becomes `organize show --reveal`
-- `organize reveal --path` becomes `organize show --path`
-- `organize schema` is not longer supported.
-- The already deprecated `--config-file` option is now removed.
+- `organize check --debug` 变为 `organize debug`
+- `organize reveal` 变为 `organize show --reveal`
+- `organize reveal --path` 变为 `organize show --path`
+- `organize schema` 不再受支持。
+- 已弃用的 `--config-file` 选项现在已移除。
 
 
-That's it. If you encounter any other bugs or problems during the migration, please
-reach out!
+就是这样。如果您在迁移过程中遇到任何其他 bug 或问题，请联系我们！
 
 <hr>
 
-## Migrating from v1 to v2
+## 从 v1 迁移到 v2
 
 
-### Folders
+### 文件夹
 
-Folders have become [Locations](locations.md) in organize v2.
+文件夹在 organize v2 中已成为 [位置](locations.md)。
 
-- `folders` must be renamed to `locations` in your config.
-- REMOVED: The glob syntax (`/Docs/**/*.png`).
-  See [Location options](locations.md#location-options).
-- REMOVED: The exclamation mark exclude syntax (`! ~/Desktop/exclude`).
-  See [Location options](locations.md#location-options).
-- All keys (filter names, action names, option names) now must be lowercase.
+- `folders` 必须在您的配置中重命名为 `locations`。
+- 移除：Glob 语法 (`/Docs/**/*.png`)。
+  参见 [位置选项](locations.md#location-options)。
+- 移除：感叹号排除语法 (`! ~/Desktop/exclude`)。
+  参见 [位置选项](locations.md#location-options)。
+- 所有键（过滤器名称、操作名称、选项名称）现在必须小写。
 
-### Placeholders
+### 占位符
 
-organize v2 uses the Jinja template engine. You may need to change some of your
-placeholders.
+organize v2 使用 Jinja 模板引擎。您可能需要更改一些占位符。
 
-- `{basedir}` is no longer available.
-- You have to replace undocumented placeholders like this:
+- `{basedir}` 不再可用。
+- 您必须替换未记录的占位符，如：
 
 ```yaml
 "{created.year}-{created.month:02}-{created.day:02}"
 ```
 
-With this:
+为：
 
 ```yaml
 "{created.strftime('%Y-%m-%d')}"
 ```
 
-If you need to left pad other numbers you can now use the following syntax:
+如果您需要左填充其他数字，您现在可以使用以下语法：
 
 ```yaml
 "{'%02d' % your_variable}"
-# or
+# 或
 "{ '{:02}'.format(your_variable) }"
 ```
 
-### Filters
+### 过滤器
 
-- [`filename`](filters.md#name) is renamed to `name`.
-- [`filesize`](filters.md#size) is renamed to `size`.
-- [`created`](filters.md#created) no longer accepts a timezone and uses the local timezone by default.
-- [`lastmodified`](filters.md#lastmodified) no longer accepts a timezone and uses the local timezone by default.
-- [`extension`](filters.md#extension) `lower` and `upper` are now functions and must be called like this:
-  `"{extension.upper()}"` and `"{extension.lower()}"`.
+- [`filename`](filters.md#name) 重命名为 `name`。
+- [`filesize`](filters.md#size) 重命名为 `size`。
+- [`created`](filters.md#created) 不再接受时区，默认使用本地时区。
+- [`lastmodified`](filters.md#lastmodified) 不再接受时区，默认使用本地时区。
+- [`extension`](filters.md#extension) `lower` 和 `upper` 现在是函数，必须像这样调用：
+  `"{extension.upper()}"` 和 `"{extension.lower()}"`。
 
-### Actions
+### 操作
 
-The copy, move and rename actions got a whole lot more powerful. You now have several
-conflict options and can specify exactly how a file should be renamed in case of a
-conflict.
+复制、移动和重命名操作变得更强大了。您现在有几个冲突选项，可以指定在冲突情况下文件应如何重命名。
 
-This means you might need to change your config to use the new parameters.
+这意味着您可能需要更改配置以使用新参数。
 
-- [`copy`](actions.md#copy) arguments changed to support conflict resolution options.
-- [`move`](actions.md#move) arguments changed to support conflict resolution options.
-- [`rename`](actions.md#rename) arguments changed to support conflict resolution options.
+- [`copy`](actions.md#copy) 参数更改为支持冲突解决选项。
+- [`move`](actions.md#move) 参数更改为支持冲突解决选项。
+- [`rename`](actions.md#rename) 参数更改为支持冲突解决选项。
 
-Example:
+示例：
 
 ```yml
 rules:
@@ -116,7 +107,7 @@ rules:
           counter_seperator: "-"
 ```
 
-becomes (organize v2):
+变为 (organize v2)：
 
 ```yaml
 rules:
@@ -130,13 +121,11 @@ rules:
           rename_template: "{name}-{counter}{extension}"
 ```
 
-If you used `move`, `copy` or `rename` without arguments, nothing changes for you.
+如果您使用 `move`、`copy` 或 `rename` 而不带参数，对您来说没什么变化。
 
-### Settings
+### 设置
 
-The `system_files` setting has been removed. In order to include system files in your
-search, overwrite the default [`system_exclude_files`](locations.md#location-options)
-with an empty list:
+`system_files` 设置已被移除。为了在搜索中包含系统文件，请使用空列表覆盖默认的 [`system_exclude_files`](locations.md#location-options)：
 
 ```yaml
 rules:
@@ -150,4 +139,4 @@ rules:
       - trash
 ```
 
-That's it. Again, feel free to open a issue if you have trouble migrating your config.
+就是这样。再次，如果您在迁移配置时遇到问题，请随意打开一个 issue。

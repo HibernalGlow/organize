@@ -1,19 +1,18 @@
-# Actions
+# 操作
 
-This page shows the specifics of each action. For basic action usage and options have a
-look at the [Rules](rules.md) section.
+此页面显示每个操作的具体信息。有关基本操作用法和选项，请查看 [规则](rules.md) 部分。
 
-## confirm
+## 确认
 
 ::: organize.actions.Confirm
 
-**Examples**
+**示例**
 
-Confirm before deleting a duplicate
+在删除重复文件前确认
 
 ```yaml
 rules:
-  - name: "Delete duplicates with confirmation"
+  - name: "删除重复文件时确认"
     locations:
       - ~/Downloads
       - ~/Documents
@@ -22,17 +21,17 @@ rules:
       - duplicate
       - name
     actions:
-      - confirm: "Delete {name}?"
+      - confirm: "删除 {name}？"
       - trash
 ```
 
-## copy
+## 复制
 
 ::: organize.actions.Copy
 
-**Examples:**
+**示例：**
 
-Copy all pdfs into `~/Desktop/somefolder/` and keep filenames
+将所有 PDF 文件复制到 `~/Desktop/somefolder/` 并保留文件名
 
 ```yaml
 rules:
@@ -43,7 +42,7 @@ rules:
       - copy: "~/Desktop/somefolder/"
 ```
 
-Use a placeholder to copy all .pdf files into a "PDF" folder and all .jpg files into a "JPG" folder. Existing files will be overwritten.
+使用占位符将所有 .pdf 文件复制到 "PDF" 文件夹，将所有 .jpg 文件复制到 "JPG" 文件夹。现有文件将被覆盖。
 
 ```yaml
 rules:
@@ -58,7 +57,7 @@ rules:
           on_conflict: overwrite
 ```
 
-Use a placeholder to copy all .pdf files into a "PDF" folder and all .jpg files into a "JPG" folder. If two files share the same file name and are duplicates, the duplicate will be skipped. If they aren't duplicates, the second file will be renamed.
+使用占位符将所有 .pdf 文件复制到 "PDF" 文件夹，将所有 .jpg 文件复制到 "JPG" 文件夹。如果两个文件共享相同的文件名且为重复文件，则跳过重复文件。如果不是重复文件，则第二个文件将被重命名。
 
 ```yaml
 rules:
@@ -73,9 +72,9 @@ rules:
           on_conflict: deduplicate
 ```
 
-Copy into the folder `Invoices`. Keep the filename but do not overwrite existing files.
-To prevent overwriting files, an index is added to the filename, so `somefile.jpg` becomes `somefile 2.jpg`.
-The counter separator is `' '` by default, but can be changed using the `counter_separator` property.
+复制到文件夹 `Invoices`。保留文件名但不覆盖现有文件。
+为了防止覆盖文件，会在文件名中添加索引，因此 `somefile.jpg` 变为 `somefile 2.jpg`。
+计数器分隔符默认为 `' '` ，但可以使用 `counter_separator` 属性更改。
 
 ```yaml
 rules:
@@ -90,13 +89,13 @@ rules:
           rename_template: "{name} {counter}{extension}"
 ```
 
-## delete
+## 删除
 
 ::: organize.actions.delete.Delete
 
-**Examples:**
+**示例：**
 
-Delete old downloads.
+删除旧下载文件。
 
 ```yaml
 rules:
@@ -111,11 +110,11 @@ rules:
       - delete
 ```
 
-Delete all empty subfolders
+删除所有空子文件夹
 
 ```yaml
 rules:
-  - name: Delete all empty subfolders
+  - name: 删除所有空子文件夹
     locations:
       - path: "~/Downloads"
         max_depth: null
@@ -126,24 +125,24 @@ rules:
       - delete
 ```
 
-## echo
+## 回显
 
 ::: organize.actions.Echo
 
-**Examples:**
+**示例：**
 
 ```yaml
 rules:
-  - name: "Find files older than a year"
+  - name: "查找超过一年的文件"
     locations: ~/Desktop
     filters:
       - lastmodified:
           days: 365
     actions:
-      - echo: "Found old file"
+      - echo: "找到旧文件"
 ```
 
-Prints "Hello World!" and filepath for each file on the desktop:
+为桌面上的每个文件打印 "Hello World!" 和文件路径：
 
 ```yaml
 rules:
@@ -153,7 +152,7 @@ rules:
       - echo: "Hello World! {path}"
 ```
 
-This will print something like `Found a ZIP: "backup"` for each file on your desktop
+这将为桌面上的每个文件打印类似 `找到 ZIP: "backup"` 的内容
 
 ```yaml
 rules:
@@ -163,10 +162,10 @@ rules:
       - extension
       - name
     actions:
-      - echo: 'Found a {extension.upper()}: "{name}"'
+      - echo: '找到 {extension.upper()}: "{name}"'
 ```
 
-Show the `{relative_path}` and `{path}` of all files in '~/Downloads', '~/Desktop' and their subfolders:
+显示 '~/Downloads'、'~/Desktop' 及其子文件夹中所有文件的 `{relative_path}` 和 `{path}`：
 
 ```yaml
 rules:
@@ -176,23 +175,23 @@ rules:
       - path: ~/Downloads
         max_depth: null
     actions:
-      - echo: "Path:     {path}"
-      - echo: "Relative: {relative_path}"
+      - echo: "路径:     {path}"
+      - echo: "相对路径: {relative_path}"
 ```
 
-## hardlink
+## 硬链接
 
 ::: organize.actions.Hardlink
 
-## macos_tags
+## macOS 标签
 
 ::: organize.actions.MacOSTags
 
-**Examples:**
+**示例：**
 
 ```yaml
 rules:
-  - name: "add a single tag"
+  - name: "添加单个标签"
     locations: "~/Documents/Invoices"
     filters:
       - name:
@@ -202,7 +201,7 @@ rules:
       - macos_tags: Invoice
 ```
 
-Adding multiple tags ("Invoice" and "Important")
+添加多个标签（"Invoice" 和 "Important"）
 
 ```yaml
 rules:
@@ -217,7 +216,7 @@ rules:
           - Invoice
 ```
 
-Specify tag colors
+指定标签颜色
 
 ```yaml
 rules:
@@ -232,7 +231,7 @@ rules:
           - Invoice (purple)
 ```
 
-Add a templated tag with color
+添加带颜色的模板标签
 
 ```yaml
 rules:
@@ -244,13 +243,13 @@ rules:
           - Year-{created.year} (red)
 ```
 
-## move
+## 移动
 
 ::: organize.actions.Move
 
-**Examples:**
+**示例：**
 
-Move all pdfs and jpgs from the desktop into the folder "~/Desktop/media/". Filenames are not changed.
+将桌面上的所有 PDF 和 JPG 文件移动到文件夹 "~/Desktop/media/"。文件名不变。
 
 ```yaml
 rules:
@@ -263,8 +262,7 @@ rules:
       - move: "~/Desktop/media/"
 ```
 
-Use a placeholder to move all .pdf files into a "PDF" folder and all .jpg files into a
-"JPG" folder. Existing files will be overwritten.
+使用占位符将所有 .pdf 文件移动到 "PDF" 文件夹，将所有 .jpg 文件移动到 "JPG" 文件夹。现有文件将被覆盖。
 
 ```yaml
 rules:
@@ -279,7 +277,7 @@ rules:
           on_conflict: "overwrite"
 ```
 
-Move pdfs into the folder `Invoices`. Keep the filename but do not overwrite existing files. To prevent overwriting files, an index is added to the filename, so `somefile.jpg` becomes `somefile 2.jpg`.
+将 PDF 文件移动到文件夹 `Invoices`。保留文件名但不覆盖现有文件。为了防止覆盖文件，会在文件名中添加索引，因此 `somefile.jpg` 变为 `somefile 2.jpg`。
 
 ```yaml
 rules:
@@ -294,38 +292,37 @@ rules:
           rename_template: "{name} {counter}{extension}"
 ```
 
-## python
+## Python
 
 ::: organize.actions.Python
 
-**Examples:**
+**示例：**
 
-A basic example that shows how to get the current file path and do some printing in a
-for loop. The `|` is yaml syntax for defining a string literal spanning multiple lines.
+一个基本示例，展示如何获取当前文件路径并在 for 循环中进行一些打印。`|` 是 YAML 语法，用于定义跨越多行的字符串字面量。
 
 ```yaml
 rules:
   - locations: "~/Desktop"
     actions:
       - python: |
-          print('The path of the current file is %s' % path)
+          print('当前文件的路径是 %s' % path)
           for _ in range(5):
-              print('Heyho, its me from the loop')
+              print('嘿嘿，是我从循环中来的')
 ```
 
 ```yaml
 rules:
-  - name: "You can access filter data"
+  - name: "您可以访问过滤器数据"
     locations: ~/Desktop
     filters:
       - regex: '^(?P<name>.*)\.(?P<extension>.*)$'
     actions:
       - python: |
-          print('Name: %s' % regex["name"])
-          print('Extension: %s' % regex["extension"])
+          print('名称: %s' % regex["name"])
+          print('扩展名: %s' % regex["extension"])
 ```
 
-Running in simulation and [yaml aliases](rules.md#advanced-aliases):
+在模拟中运行和 [YAML 别名](rules.md#advanced-aliases)：
 
 ```yaml
 my_python_script: &script |
@@ -333,7 +330,7 @@ my_python_script: &script |
   print(path)
 
 rules:
-  - name: "Run in simulation and yaml alias"
+  - name: "在模拟中运行和 YAML 别名"
     locations:
       - ~/Desktop/
     actions:
@@ -342,8 +339,7 @@ rules:
           run_in_simulation: yes
 ```
 
-You have access to all the python magic -- do a google search for each
-filename starting with an underscore:
+您可以访问所有 Python 魔法——为每个以下划线开头的文件名进行谷歌搜索：
 
 ```yaml
 rules:
@@ -357,15 +353,15 @@ rules:
           webbrowser.open('https://www.google.com/search?q=%s' % name)
 ```
 
-## rename
+## 重命名
 
 ::: organize.actions.Rename
 
-**Examples:**
+**示例：**
 
 ```yaml
 rules:
-  - name: "Convert all .PDF file extensions to lowercase (.pdf)"
+  - name: "将所有 .PDF 文件扩展名转换为小写 (.pdf)"
     locations: "~/Desktop"
     filters:
       - name
@@ -376,7 +372,7 @@ rules:
 
 ```yaml
 rules:
-  - name: "Convert **all** file extensions to lowercase"
+  - name: "将**所有**文件扩展名转换为小写"
     locations: "~/Desktop"
     filters:
       - name
@@ -385,15 +381,15 @@ rules:
       - rename: "{name}.{extension.lower()}"
 ```
 
-## shell
+## Shell
 
 ::: organize.actions.Shell
 
-**Examples:**
+**示例：**
 
 ```yaml
 rules:
-  - name: "On macOS: Open all pdfs on your desktop"
+  - name: "在 macOS 上：打开桌面上的所有 PDF"
     locations: "~/Desktop"
     filters:
       - extension: pdf
@@ -401,19 +397,19 @@ rules:
       - shell: 'open "{path}"'
 ```
 
-## symlink
+## 符号链接
 
 ::: organize.actions.Symlink
 
-## trash
+## 回收站
 
 ::: organize.actions.Trash
 
-**Examples:**
+**示例：**
 
 ```yaml
 rules:
-  - name: Move all JPGs and PNGs on the desktop which are older than one year into the trash
+  - name: 将桌面上一年以上的 JPG 和 PNG 文件移动到回收站
     locations: "~/Desktop"
     filters:
       - lastmodified:
@@ -426,15 +422,15 @@ rules:
       - trash
 ```
 
-## write
+## 写入
 
 ::: organize.actions.Write
 
-**Examples**
+**示例**
 
 ```yaml
 rules:
-  - name: "Record file sizes"
+  - name: "记录文件大小"
     locations: ~/Downloads
     filters:
       - size
@@ -446,8 +442,7 @@ rules:
           clear_before_first_write: true
 ```
 
-This will create a file `sizes.txt` in the current working folder which contains the
-filesizes of everything in the `~/Downloads` folder:
+这将在当前工作文件夹中创建一个文件 `sizes.txt`，其中包含 `~/Downloads` 文件夹中所有文件的大小：
 
 ```
 2.9 MB -- SIM7600.pdf
@@ -459,11 +454,11 @@ filesizes of everything in the `~/Downloads` folder:
 ...
 ```
 
-You can use templates both in the text as well as in the textfile parameter:
+您可以在文本和文本文件参数中使用模板：
 
 ```yaml
 rules:
-  - name: "File sizes by extension"
+  - name: "按扩展名记录文件大小"
     locations: ~/Downloads
     filters:
       - size
@@ -476,4 +471,4 @@ rules:
           clear_before_first_write: true
 ```
 
-This will separate the filesizes by extension.
+这将按扩展名分离文件大小。

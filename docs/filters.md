@@ -1,23 +1,22 @@
-# Filters
+# 过滤器
 
-This page shows the specifics of each filter.
+此页面显示每个过滤器的具体信息。
 
-## - How to exclude filters -
+## - 如何排除过滤器 -
 
-To exclude a filter, prefix the filter name with **not** (e.g. `"not empty"`,
-`"not extension": jpg`, etc).
+要排除过滤器，请在过滤器名称前加上 **not**（例如 `"not empty"`、`"not extension": jpg` 等）。
 
 !!! note
 
-    If you want to exclude all filters you can set the rule's `filter_mode` to `none`.
+    如果您想排除所有过滤器，可以将规则的 `filter_mode` 设置为 `none`。
 
-Example:
+示例：
 
 ```yaml
 rules:
-  # using filter_mode
+  # 使用 filter_mode
   - locations: ~/Desktop
-    filter_mode: "none" # <- excludes all
+    filter_mode: "none" # <- 排除所有
     filters:
       - empty
       - name:
@@ -25,13 +24,13 @@ rules:
     actions:
       - echo: "{name}"
 
-  # Exclude a single filter
+  # 排除单个过滤器
   - locations: ~/Desktop
     filters:
-      - not extension: jpg # <- matches all non-jpgs
+      - not extension: jpg # <- 匹配所有非 jpg
       - name:
           startswith: "Invoice"
-      - not empty # <- matches files with content
+      - not empty # <- 匹配有内容的文件
     actions:
       - echo: "{name}"
 ```
@@ -40,40 +39,40 @@ rules:
 
 ::: organize.filters.Created
 
-**Examples:**
+**示例：**
 
-Show all files on your desktop created at least 10 days ago
+显示桌面上的所有至少 10 天前创建的文件
 
 ```yaml
 rules:
-  - name: Show all files on your desktop created at least 10 days ago
+  - name: 显示桌面上的所有至少 10 天前创建的文件
     locations: "~/Desktop"
     filters:
       - created:
           days: 10
     actions:
-      - echo: "Was created at least 10 days ago"
+      - echo: "至少 10 天前创建"
 ```
 
-Show all files on your desktop which were created within the last 5 hours
+显示桌面上的所有在过去 5 小时内创建的文件
 
 ```yaml
 rules:
-  - name: Show all files on your desktop which were created within the last 5 hours
+  - name: 显示桌面上的所有在过去 5 小时内创建的文件
     locations: "~/Desktop"
     filters:
       - created:
           hours: 5
           mode: newer
     actions:
-      - echo: "Was created within the last 5 hours"
+      - echo: "在过去 5 小时内创建"
 ```
 
-Sort pdfs by year of creation
+按创建年份排序 PDF
 
 ```yaml
 rules:
-  - name: Sort pdfs by year of creation
+  - name: 按创建年份排序 PDF
     locations: "~/Documents"
     filters:
       - extension: pdf
@@ -82,18 +81,18 @@ rules:
       - move: "~/Documents/PDF/{created.year}/"
 ```
 
-Formatting the creation date
+格式化创建日期
 
 ```yaml
 rules:
-  - name: Display the creation date
+  - name: 显示创建日期
     locations: "~/Documents"
     filters:
       - extension: pdf
       - created
     actions:
-      - echo: "ISO Format:   {created.strftime('%Y-%m-%d')}"
-      - echo: "As timestamp: {created.timestamp() | int}"
+      - echo: "ISO 格式:   {created.strftime('%Y-%m-%d')}"
+      - echo: "作为时间戳: {created.timestamp() | int}"
 ```
 
 ## date_added
@@ -102,47 +101,47 @@ rules:
 
 Works the same way as [`created`](#created) and [`lastmodified`](#lastmodified).
 
-**Examples:**
+**示例：**
 
 ```yaml
 rules:
-  - name: Show the date the file was added to the folder
+  - name: 显示文件添加到文件夹的日期
     locations: "~/Desktop"
     filters:
       - date_added
     actions:
-      - echo: "Date added: {date_added.strftime('%Y-%m-%d')}"
+      - echo: "添加日期: {date_added.strftime('%Y-%m-%d')}"
 ```
 
 ## date_lastused
 
 ::: organize.filters.DateLastUsed
 
-Works the same way as [`created`](#created) and [`lastmodified`](#lastmodified).
+与 [`created`](#created) 和 [`lastmodified`](#lastmodified) 工作方式相同。
 
-**Examples:**
+**示例：**
 
 ```yaml
 rules:
-  - name: Show the date the file was added to the folder
+  - name: 显示文件添加到文件夹的日期
     locations: "~/Desktop"
     filters:
       - date_lastused
     actions:
-      - echo: "Date last used: {date_lastused.strftime('%Y-%m-%d')}"
+      - echo: "最后使用日期: {date_lastused.strftime('%Y-%m-%d')}"
 ```
 
 ## duplicate
 
 ::: organize.filters.Duplicate
 
-**Examples:**
+**示例：**
 
-Show all duplicate files in your desktop and download folder (and their subfolders)
+显示桌面和下载文件夹（及其子文件夹）中的所有重复文件
 
 ```yaml
 rules:
-  - name: Show all duplicate files in your desktop and download folder (and their subfolders)
+  - name: 显示桌面和下载文件夹（及其子文件夹）中的所有重复文件
     locations:
       - ~/Desktop
       - ~/Downloads
@@ -150,14 +149,14 @@ rules:
     filters:
       - duplicate
     actions:
-      - echo: "{path} is a duplicate of {duplicate.original}"
+      - echo: "{path} 是 {duplicate.original} 的重复"
 ```
 
-Check for duplicated files between Desktop and a Zip file, select original by creation date
+检查桌面和 Zip 文件之间的重复文件，按创建日期选择原始文件
 
 ```yaml
 rules:
-  - name: "Check for duplicated files between Desktop and a Zip file, select original by creation date"
+  - name: "检查桌面和 Zip 文件之间的重复文件，按创建日期选择原始文件"
     locations:
       - ~/Desktop
       - zip://~/Desktop/backup.zip
@@ -165,16 +164,16 @@ rules:
       - duplicate:
           detect_original_by: "created"
     actions:
-      - echo: "Duplicate found!"
+      - echo: "找到重复！"
 ```
 
 ## empty
 
 ::: organize.filters.Empty
 
-**Examples:**
+**示例：**
 
-Recursively delete empty folders
+递归删除空文件夹
 
 ```yaml
 rules:

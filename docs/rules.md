@@ -1,13 +1,10 @@
-# Rules
+# 规则
 
-A organize config file can be written in [YAML](https://learnxinyminutes.com/docs/yaml/)
-or [JSON](https://learnxinyminutes.com/docs/json/). See [configuration](configuration.md)
-on how to locate your config file.
+organize 配置文件可以使用 [YAML](https://learnxinyminutes.com/docs/yaml/) 或 [JSON](https://learnxinyminutes.com/docs/json/) 编写。请参阅 [configuration](configuration.md) 以了解如何定位您的配置文件。
 
-The top level element must be a dict with a key "rules".
-"rules" contains a list of objects with the required keys "locations" and "actions".
+顶级元素必须是一个包含 "rules" 键的字典。"rules" 包含一个对象列表，每个对象必须包含 "locations" 和 "actions" 键。
 
-A minimum config:
+最小配置：
 
 ```yaml
 rules:
@@ -16,16 +13,15 @@ rules:
       - echo: "Hello World!"
 ```
 
-Organize checks your rules from top to bottom. For every resource in each location (top to bottom)
-it will check whether the filters apply (top to bottom) and then execute the given actions (top to bottom).
+Organize 从上到下检查您的规则。对于每个位置中的每个资源（从上到下），它将检查过滤器是否适用（从上到下），然后执行给定的操作（从上到下）。
 
-So with this minimal configuration it will print "Hello World!" for each file it finds in your Desktop.
+因此，使用此最小配置，它将在您的桌面上找到的每个文件上打印 "Hello World!"。
 
-## Rule options
+## 规则选项
 
 ```yml
 rules:
-  # First rule
+  # 第一个规则
   - name: ...
     enabled: ...
     targets: ...
@@ -36,63 +32,59 @@ rules:
     actions: ...
     tags: ...
 
-  # Another rule
+  # 另一个规则
   - name: ...
     enabled: ...
-    # ... and so on
+    # ... 等等
 ```
 
-The rule options in detail:
+规则选项详情：
 
-- **name** (`str`): The rule name
-- **enabled** (`bool`): Whether the rule is enabled / disabled _(Default: `true`)_
-- **targets** (`str`): `"dirs"` or `"files"` _(Default: `"files"`)_
-- **locations** (`str`|`list`) - A single location string or list of [locations](locations.md)
-- **subfolders** (`bool`): Whether to recurse into subfolders of all locations _(Default: `false`)_
-- **filter_mode** (`str`): `"all"`, `"any"` or `"none"` of the filters must apply _(Default: `"all"`)_
-- **filters** (`list`): A list of [filters](filters.md) _(Default: `[]`)_
-- **actions** (`list`): A list of [actions](actions.md)
-- **tags** (`list`): A list of [tags](configuration.md#running-specific-rules-of-your-config)
+- **name** (`str`)：规则名称
+- **enabled** (`bool`)：规则是否启用/禁用 _(默认：`true`)_
+- **targets** (`str`)：`"dirs"` 或 `"files"` _(默认：`"files"`)_
+- **locations** (`str`|`list`) - 单个位置字符串或 [locations](locations.md) 列表
+- **subfolders** (`bool`)：是否递归进入所有位置的子文件夹 _(默认：`false`)_
+- **filter_mode** (`str`)：过滤器必须应用 `"all"`、`"any"` 或 `"none"` _(默认：`"all"`)_
+- **filters** (`list`)：[filters](filters.md) 列表 _(默认：`[]`)_
+- **actions** (`list`)：[actions](actions.md) 列表
+- **tags** (`list`)：[tags](configuration.md#running-specific-rules-of-your-config) 列表
 
-## Targeting directories
+## 针对目录
 
-When `targets` is set to `dirs`, organize will work on the folders, not on files.
+当 `targets` 设置为 `dirs` 时，organize 将对文件夹而不是文件进行操作。
 
-The filters adjust their meaning automatically. For example the `size` filter sums up
-the size of all files contained in the given folder instead of returning the size of a
-single file.
+过滤器会自动调整其含义。例如，`size` 过滤器会汇总给定文件夹中所有文件的大小，而不是返回单个文件的大小。
 
-Of course other filters like `exif` or `filecontent` do not work on folders and will
-return an error.
+当然，其他过滤器如 `exif` 或 `filecontent` 不适用于文件夹，将返回错误。
 
-## Templates and placeholders
+## 模板和占位符
 
-Placeholder variables are used with curly braces `{var}`.
+占位符变量使用大括号 `{var}`。
 
-These variables are **always available**:
+这些变量 **始终可用**：
 
 `{env}` (`dict`)<br>
-All your environment variables. You can access individual env vars like this: `{env.MY_VARIABLE}`.
+您的所有环境变量。您可以像这样访问单个环境变量：`{env.MY_VARIABLE}`。
 
 `{path}` ([`pathlib.Path`](https://docs.python.org/3/library/pathlib.html#methods-and-properties))<br>
-The full path to the current file / folder on the local harddrive.
+本地硬盘上当前文件/文件夹的完整路径。
 
 `{relative_path}` (`str`)<br>
-the relative path of the current file or dir.
+当前文件或目录的相对路径。
 
 `{now()}` (`datetime`)<br>
-The current datetime in the local timezone.
+本地时区的当前日期时间。
 
 `{utcnow()}` (`datetime`)<br>
-The current UTC datetime.
+当前的 UTC 日期时间。
 
 `{today()}` (`date`)<br>
-Today's date.
+今天的日期。
 
-In addition to that nearly all filters add new placeholders with information about
-the currently handled file / folder.
+此外，几乎所有过滤器都会添加新的占位符，其中包含有关当前处理的文件/文件夹的信息。
 
-Example on how to access the size and hash of a file:
+访问文件大小和哈希的示例：
 
 ```yaml
 rules:
@@ -106,14 +98,13 @@ rules:
 
 !!! note
 
-    In order to use a value returned by a filter it must be listed in the filters!
+    要使用过滤器返回的值，必须将其列在过滤器中！
 
-## Advanced: Aliases
+## 高级：别名
 
-Instead of repeating the same locations / actions / filters in each and every rule you
-can use an alias for multiple locations which you can then reference in each rule.
+与其在每个规则中重复相同的 locations/actions/filters，您可以使用别名来引用多个位置，然后在每个规则中引用它。
 
-Aliases are a standard feature of the YAML syntax.
+别名是 YAML 语法的标准功能。
 
 ```yml
 all_my_messy_folders: &all
@@ -132,7 +123,7 @@ rules:
     actions: ...
 ```
 
-You can even use multiple folder lists:
+您甚至可以使用多个文件夹列表：
 
 ```yml
 private_folders: &private
@@ -160,7 +151,7 @@ rules:
     filters: ...
     actions: ...
 
-  # same as *all
+  # 与 *all 相同
   - locations:
       - *work
       - *private
